@@ -15,7 +15,7 @@ class AllPersonData extends StatefulWidget {
 
 class _AllPersonDataState extends State<AllPersonData> {
   Future allPerson() async {
-    var url = "http://192.168.181.11/location/viewAll.php";
+    var url = "http://192.168.43.245/location/viewAll.php";
     var response = await http.get(Uri.parse(url));
 
     var jsonData = json.decode(response.body);
@@ -23,8 +23,16 @@ class _AllPersonDataState extends State<AllPersonData> {
     List<Voiture> voitures = [];
 
     for (var v in jsonData) {
-      Voiture voiture = Voiture(int.parse(v["id_voiture"]), v["Marque"], v["image"],
-          v["Modele"], v["vitesses"], v["nbr_places"], v["Prix"], v["Couleur"], v["Disponibilite"]);
+      Voiture voiture = Voiture(
+          int.parse(v["id_voiture"]),
+          v["Marque"],
+          v["image"],
+          v["Modele"],
+          v["vitesses"],
+          v["nbr_places"],
+          v["Prix"],
+          v["Couleur"],
+          v["Disponibilite"]);
 
       voitures.add(voiture);
     }
@@ -32,8 +40,6 @@ class _AllPersonDataState extends State<AllPersonData> {
 
     return voitures;
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +64,8 @@ class _AllPersonDataState extends State<AllPersonData> {
       body: RefreshIndicator(
         color: Colors.blue,
         onRefresh: () {
-          return
-          Navigator.pushReplacement(context,
-          PageRouteBuilder(pageBuilder: (a,b,c)=>AllPersonData()));
-
+          return Navigator.pushReplacement(context,
+              PageRouteBuilder(pageBuilder: (a, b, c) => AllPersonData()));
         },
         child: FutureBuilder(
           future: allPerson(),
@@ -69,79 +73,87 @@ class _AllPersonDataState extends State<AllPersonData> {
             if (snapshot.hasError) print(snapshot.error);
             return snapshot.hasData
                 ? ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context,  int id) {
-                  return Card(
-                    elevation: 20,
-                    child: ListTile(
-                      title: Stack(
-                        alignment: Alignment.topLeft,
-                        children:[ Container(
-      
-                          child: Image.network(
-                              "http://192.168.181.11/location/uploads/${snapshot.data[id].image}"),
-                        ),
-                          InkWell(
-                            child: Icon(Icons.delete),
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int id) {
+                      return Card(
+                        elevation: 20,
+                        child: ListTile(
+                          title: Stack(
+                            alignment: Alignment.topLeft,
+                            children: [
+                              Container(
+                                child: Image.network(
+                                    "http://192.168.43.245/location/uploads/${snapshot.data[id].image}"),
+                              ),
+                              InkWell(
+                                child: Icon(Icons.delete),
+                                onTap: () {
+                                  setState(() {
+                                    var url = Uri.parse(
+                                        'http://192.168.43.245/location/delete.php');
+                                    http.post(url, body: {
+                                      'id_voiture': snapshot.data[id].id_voiture
+                                          .toString(),
+                                    });
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                          subtitle: Center(
+                              child: Text(
+                            snapshot.data[id].Marque,
+                            style: MainHeading,
+                          )),
+                          trailing: GestureDetector(
+                            child: Icon(Icons.edit),
                             onTap: () {
-                              setState(() {
-                                var url = Uri.parse('http://192.168.181.11/location/delete.php');
-                                http.post(url, body: {
-                                  'id_voiture': snapshot.data[id].id_voiture.toString(),
-                                });
-                              });
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AllModifier(
+                                    id_voiture: snapshot.data[id].id_voiture,
+                                    Marque: snapshot.data[id].Marque,
+                                    image: snapshot.data[id].image,
+                                    Modele: snapshot.data[id].Modele,
+                                    vitesses: snapshot.data[id].vitesses,
+                                    nbr_places: snapshot.data[id].nbr_places,
+                                    Prix: snapshot.data[id].Prix,
+                                    Couleur: snapshot.data[id].Couleur,
+                                    Disponibilite:
+                                        snapshot.data[id].Disponibilite,
+                                  ),
+                                ),
+                              );
                             },
                           ),
-                        ],
-                      ),
-                      subtitle: Center(child: Text(snapshot.data[id].Marque,style: MainHeading,)),
-                      trailing: GestureDetector(
-                        child: Icon(Icons.edit),
-                        onTap: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AllModifier(
-                                id_voiture: snapshot.data[id].id_voiture,
-                                Marque: snapshot.data[id].Marque,
-                                image: snapshot.data[id].image,
-                                Modele: snapshot.data[id].Modele,
-                                vitesses: snapshot.data[id].vitesses,
-                                nbr_places: snapshot.data[id].nbr_places,
-                                Prix: snapshot.data[id].Prix,
-                                Couleur: snapshot.data[id].Couleur,
-                                Disponibilite: snapshot.data[id].Disponibilite,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => TypeVoiture(
-                                id_voiture: snapshot.data[id].id_voiture,
-                                Marque: snapshot.data[id].Marque,
-                                image: snapshot.data[id].image,
-                                Modele: snapshot.data[id].Modele,
-                                vitesses: snapshot.data[id].vitesses,
-                                nbr_places: snapshot.data[id].nbr_places,
-                                Prix: snapshot.data[id].Prix,
-                                Couleur: snapshot.data[id].Couleur,
-                                Disponibilite: snapshot.data[id].Disponibilite,
-                              ),
-                            ));
-                      },
-                    ),
-                  );
-                })
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => TypeVoiture(
+                                    id_voiture: snapshot.data[id].id_voiture,
+                                    Marque: snapshot.data[id].Marque,
+                                    image: snapshot.data[id].image,
+                                    Modele: snapshot.data[id].Modele,
+                                    vitesses: snapshot.data[id].vitesses,
+                                    nbr_places: snapshot.data[id].nbr_places,
+                                    Prix: snapshot.data[id].Prix,
+                                    Couleur: snapshot.data[id].Couleur,
+                                    Disponibilite:
+                                        snapshot.data[id].Disponibilite,
+                                  ),
+                                ));
+                          },
+                        ),
+                      );
+                    })
                 : Center(
-              child: CircularProgressIndicator(),
-            );
+                    child: CircularProgressIndicator(),
+                  );
           },
         ),
       ),
-      );
+    );
   }
 }

@@ -16,22 +16,23 @@ class AllModifier extends StatefulWidget {
   final String Couleur;
   final String Disponibilite;
 
-  AllModifier(
-      { required this.id_voiture,
-        required this.Marque,
-        required this.image,
-        required this.Modele,
-        required this.vitesses,
-        required this.nbr_places,
-        required this.Prix,
-        required this.Couleur,
-        required this.Disponibilite,});
+  AllModifier({
+    required this.id_voiture,
+    required this.Marque,
+    required this.image,
+    required this.Modele,
+    required this.vitesses,
+    required this.nbr_places,
+    required this.Prix,
+    required this.Couleur,
+    required this.Disponibilite,
+  });
   @override
   _AllModifier createState() => _AllModifier();
 }
 
 class _AllModifier extends State<AllModifier> {
-  late File _image;
+  File? _image;
 
   final picker = ImagePicker();
   TextEditingController marqueController = TextEditingController();
@@ -51,26 +52,25 @@ class _AllModifier extends State<AllModifier> {
   }
 
   Future modifier() async {
-      var uri = Uri.parse("http://192.168.181.11/location/edit.php");
-      var request = http.MultipartRequest('POST', uri);
-      request.fields['id_voiture'] = widget.id_voiture.toString();
-      request.fields['marque'] = marqueController.text;
-      request.fields['Modele'] = modelController.text;
-      request.fields['vitesses'] = vitesseController.text;
-      request.fields['nbr_places'] = placeController.text;
-      request.fields['Prix'] = prixController.text;
-      request.fields['Couleur'] = couleurController.text;
-      request.fields['Disponibilite'] = disponibleController.text;
-      var pic = await http.MultipartFile.fromPath("image", _image.path);
-      request.files.add(pic);
-      var response = await request.send();
+    var uri = Uri.parse("http://192.168.43.245/location/edit.php");
+    var request = http.MultipartRequest('POST', uri);
+    request.fields['id_voiture'] = widget.id_voiture.toString();
+    request.fields['marque'] = marqueController.text;
+    request.fields['Modele'] = modelController.text;
+    request.fields['vitesses'] = vitesseController.text;
+    request.fields['nbr_places'] = placeController.text;
+    request.fields['Prix'] = prixController.text;
+    request.fields['Couleur'] = couleurController.text;
+    request.fields['Disponibilite'] = disponibleController.text;
+    var pic = await http.MultipartFile.fromPath("image", _image!.path);
+    request.files.add(pic);
+    var response = await request.send();
 
-      if (response.statusCode == 200) {
-        print('Image Uploaded');
-      } else {
-        print('Image Not Uploaded');
-      }
-
+    if (response.statusCode == 200) {
+      print('Image Uploaded');
+    } else {
+      print('Image Not Uploaded');
+    }
   }
 
   @override
@@ -118,13 +118,12 @@ class _AllModifier extends State<AllModifier> {
                 child: SearchField(
                   hint: "Type de Moteur",
                   controller: vitesseController,
-    suggestions: [
-    'Gasoil',
-    'Essence',
-    'Hybride',
-    
-    ],
-),
+                  suggestions: [
+                    'Gasoil',
+                    'Essence',
+                    'Hybride',
+                  ],
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -142,22 +141,21 @@ class _AllModifier extends State<AllModifier> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child:  SearchField(
+                child: SearchField(
                   hint: "Couleur",
                   controller: couleurController,
-    suggestions: [
-    'Noir',
-    'Rouge',
-    'Jaune',
-    'Blanc',
-    'Bleu',
-    'Gris',
-    'Violet',
-    'Orange',
-    'Vert',
-    
-    ],
-),
+                  suggestions: [
+                    'Noir',
+                    'Rouge',
+                    'Jaune',
+                    'Blanc',
+                    'Bleu',
+                    'Gris',
+                    'Violet',
+                    'Orange',
+                    'Vert',
+                  ],
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -173,18 +171,18 @@ class _AllModifier extends State<AllModifier> {
                 },
               ),
               Container(
-                // child: _image == null
-                //     ? Text('No Image Selected')
-                //     : Image.file(_image),
+                child: _image == null
+                    ? Text('No Image Selected')
+                    : Image.file(_image!),
               ),
               SizedBox(
                 height: 10,
               ),
               RaisedButton(
-                shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                disabledColor: Colors.black54,
-                child: Text('upload Image'),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                disabledColor: Colors.purple.shade900,
+                child: Text('Modifier'),
                 onPressed: () {
                   modifier();
                   Navigator.push(
@@ -198,6 +196,5 @@ class _AllModifier extends State<AllModifier> {
             ],
           ),
         ));
-    }
-
+  }
 }
