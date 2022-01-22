@@ -31,7 +31,7 @@ class TypeVoiture extends StatelessWidget {
     Widget build(BuildContext context) {
       return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.black54,
+          backgroundColor: Colors.purple.shade900,
           elevation: 0,
         ),
         body: Column(
@@ -44,14 +44,14 @@ class TypeVoiture extends StatelessWidget {
             SizedBox(
                 width: 400,
                 height: 200,
-                child: Hero(tag: Marque, child: Image.network("http://192.168.43.245/location/uploads/${image}"))),
+                child: Hero(tag: Marque, child: Image.network("http://192.168.181.11/location/uploads/${image}"))),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 SpecificsCard(
                   name: 'Par Jour',
                   price: Prix,
-                  name2: 'UMR',
+                  name2: 'MRU',
                 ),
 
               ],
@@ -71,7 +71,7 @@ class TypeVoiture extends StatelessWidget {
                   name2: Couleur,
                 ),
                 SpecificsCard1(
-                  name: 'Vitesses',
+                  name: 'Moteur',
                   name2: vitesses,
                 ),
                 SpecificsCard1(
@@ -80,17 +80,7 @@ class TypeVoiture extends StatelessWidget {
                 )
               ],
             ),
-            SizedBox(height: 10),
-            RaisedButton(
-              shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              disabledColor: Colors.black54,
-              onPressed: null,
-              child: Text(
-                'Reserve Maintenant',
-                style: TextStyle(fontSize: 20, color: Colors.white),
-              ),
-            )
+            SizedBox(height: 10)
           ],
         ),
       );

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'AjouterVoiture.dart';
+import 'package:searchfield/searchfield.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      debugShowCheckedModeBanner: false,
       home: AllPersonData(),
     );
   }
@@ -49,7 +51,7 @@ class _DemoUploadImage extends State<DemoUploadImage> {
   }
 
   Future upload() async {
-    final uri = Uri.parse("http://192.168.43.245/location/upload.php");
+    final uri = Uri.parse("http://192.168.181.11/location/upload.php");
     var request = http.MultipartRequest('POST', uri);
     request.fields['marque'] = marqueController.text;
     request.fields['Modele'] = modelController.text;
@@ -73,7 +75,7 @@ class _DemoUploadImage extends State<DemoUploadImage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.black54,
+          backgroundColor: Colors.purple.shade900,
           title: Center(child: Text('AJOUTES')),
         ),
         body: SingleChildScrollView(
@@ -95,10 +97,16 @@ class _DemoUploadImage extends State<DemoUploadImage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextField(
+                child: SearchField(
+                  hint: "Type de Moteur",
                   controller: vitesseController,
-                  decoration: InputDecoration(labelText: 'Nomber Vitesses'),
-                ),
+    suggestions: [
+    'Gasoil',
+    'Essence',
+    'Hybride',
+    
+    ],
+),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -116,10 +124,22 @@ class _DemoUploadImage extends State<DemoUploadImage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextField(
+                child: SearchField(
+                  hint: "Couleur",
                   controller: couleurController,
-                  decoration: InputDecoration(labelText: 'Couleur'),
-                ),
+    suggestions: [
+    'Noir',
+    'Rouge',
+    'Jaune',
+    'Blanc',
+    'Bleu',
+    'Gris',
+    'Violet',
+    'Orange',
+    'Vert',
+    
+    ],
+),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),

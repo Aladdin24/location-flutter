@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:searchfield/searchfield.dart';
 import 'AjouterVoiture.dart';
 
 class AllModifier extends StatefulWidget {
@@ -50,7 +51,7 @@ class _AllModifier extends State<AllModifier> {
   }
 
   Future modifier() async {
-      var uri = Uri.parse("http://192.168.43.245/location/edit.php");
+      var uri = Uri.parse("http://192.168.181.11/location/edit.php");
       var request = http.MultipartRequest('POST', uri);
       request.fields['id_voiture'] = widget.id_voiture.toString();
       request.fields['marque'] = marqueController.text;
@@ -92,7 +93,7 @@ class _AllModifier extends State<AllModifier> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.black54,
+          backgroundColor: Colors.purple.shade900,
           title: Center(child: Text('Modifier')),
         ),
         body: SingleChildScrollView(
@@ -114,10 +115,16 @@ class _AllModifier extends State<AllModifier> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextField(
+                child: SearchField(
+                  hint: "Type de Moteur",
                   controller: vitesseController,
-                  decoration: InputDecoration(labelText: 'Nomber Vitesses'),
-                ),
+    suggestions: [
+    'Gasoil',
+    'Essence',
+    'Hybride',
+    
+    ],
+),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -135,10 +142,22 @@ class _AllModifier extends State<AllModifier> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextField(
+                child:  SearchField(
+                  hint: "Couleur",
                   controller: couleurController,
-                  decoration: InputDecoration(labelText: 'Couleur'),
-                ),
+    suggestions: [
+    'Noir',
+    'Rouge',
+    'Jaune',
+    'Blanc',
+    'Bleu',
+    'Gris',
+    'Violet',
+    'Orange',
+    'Vert',
+    
+    ],
+),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
