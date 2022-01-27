@@ -13,6 +13,7 @@ class TypeVoiture extends StatelessWidget {
   final String Prix;
   final String Couleur;
   final String Disponibilite;
+  final String Code;
 
   TypeVoiture(
       {required this.id_voiture,
@@ -23,7 +24,8 @@ class TypeVoiture extends StatelessWidget {
       required this.nbr_places,
       required this.Prix,
       required this.Couleur,
-      required this.Disponibilite});
+      required this.Disponibilite,
+      required this.Code});
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +82,17 @@ class TypeVoiture extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(height: 10)
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              SpecificsCard(
+                name: 'Code de Voiture',
+                price: Code,
+                name2: '',
+              ),
+            ],
+          ),
         ],
       ),
     );

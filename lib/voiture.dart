@@ -8,6 +8,8 @@ class Voiture {
   final String Prix;
   final String Couleur;
   final String Disponibilite;
+  final String Code;
 
-  Voiture(this.id_voiture, this.Marque, this.image, this.Modele, this.vitesses, this.nbr_places, this.Prix, this.Couleur, this.Disponibilite);
+  Voiture(this.id_voiture, this.Marque, this.image, this.Modele, this.vitesses,
+      this.nbr_places, this.Prix, this.Couleur, this.Disponibilite, this.Code);
 }

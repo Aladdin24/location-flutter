@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:searchfield/searchfield.dart';
 import 'AjouterVoiture.dart';
+import 'package:dropdownfield/dropdownfield.dart';
 
 class AllModifier extends StatefulWidget {
   final int id_voiture;
@@ -15,6 +16,7 @@ class AllModifier extends StatefulWidget {
   final String Prix;
   final String Couleur;
   final String Disponibilite;
+  final String Code;
 
   AllModifier({
     required this.id_voiture,
@@ -26,6 +28,7 @@ class AllModifier extends StatefulWidget {
     required this.Prix,
     required this.Couleur,
     required this.Disponibilite,
+    required this.Code,
   });
   @override
   _AllModifier createState() => _AllModifier();
@@ -42,6 +45,7 @@ class _AllModifier extends State<AllModifier> {
   TextEditingController prixController = TextEditingController();
   TextEditingController couleurController = TextEditingController();
   TextEditingController disponibleController = TextEditingController();
+  TextEditingController CodeController = TextEditingController();
   bool editMode = false;
 
   Future choiceImage() async {
@@ -62,6 +66,7 @@ class _AllModifier extends State<AllModifier> {
     request.fields['Prix'] = prixController.text;
     request.fields['Couleur'] = couleurController.text;
     request.fields['Disponibilite'] = disponibleController.text;
+    request.fields['Code'] = CodeController.text;
     var pic = await http.MultipartFile.fromPath("image", _image!.path);
     request.files.add(pic);
     var response = await request.send();
@@ -86,6 +91,7 @@ class _AllModifier extends State<AllModifier> {
       prixController.text = widget.Prix;
       couleurController.text = widget.Couleur;
       disponibleController.text = widget.Disponibilite;
+      CodeController.text = widget.Code;
     }
   }
 
@@ -101,68 +107,138 @@ class _AllModifier extends State<AllModifier> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextField(
+                child: TextFormField(
                   controller: marqueController,
-                  decoration: InputDecoration(labelText: 'Marque'),
+                  decoration: InputDecoration(
+                    labelText: 'Marque',
+                    contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextField(
+                child: TextFormField(
                   controller: modelController,
-                  decoration: InputDecoration(labelText: 'Modele'),
+                  decoration: InputDecoration(
+                    labelText: 'Modele',
+                    contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: SearchField(
-                  hint: "Type de Moteur",
-                  controller: vitesseController,
-                  suggestions: [
-                    'Gasoil',
-                    'Essence',
-                    'Hybride',
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
+                child: TextFormField(
                   controller: placeController,
-                  decoration: InputDecoration(labelText: 'Nomber Place'),
+                  decoration: InputDecoration(
+                    labelText: 'Nomber Place',
+                    contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
                   controller: prixController,
-                  decoration: InputDecoration(labelText: 'Prix'),
+                  decoration: InputDecoration(
+                    labelText: 'Prix',
+                    contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: SearchField(
-                  hint: "Couleur",
+                child: TextFormField(
+                  controller: CodeController,
+                  decoration: InputDecoration(
+                    labelText: 'Code Voiture',
+                    contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DropDownField(
+                  controller: vitesseController,
+                  hintText: "Type de Moteur",
+                  enabled: true,
+                  items: moteur,
+                  onValueChanged: (value) {
+                    setState(() {
+                      selectMoteur = value;
+                    });
+                  },
+                ),
+                // SearchField(
+                //   hint: "Type de Moteur",
+                //   controller: vitesseController,
+                //   suggestions: [
+                //     'Gasoil',
+                //     'Essence',
+                //     'Hybride',
+                //   ],
+                // ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DropDownField(
                   controller: couleurController,
-                  suggestions: [
-                    'Noir',
-                    'Rouge',
-                    'Jaune',
-                    'Blanc',
-                    'Bleu',
-                    'Gris',
-                    'Violet',
-                    'Orange',
-                    'Vert',
-                  ],
+                  hintText: "Couleurs",
+                  enabled: true,
+                  items: couleurs,
+                  onValueChanged: (value) {
+                    setState(() {
+                      selectCouleur = value;
+                    });
+                  },
                 ),
+                // SearchField(
+                //   hint: "Couleur",
+                //   controller: couleurController,
+                //   suggestions: [
+                //     'Noir',
+                //     'Rouge',
+                //     'Jaune',
+                //     'Blanc',
+                //     'Bleu',
+                //     'Gris',
+                //     'Violet',
+                //     'Orange',
+                //     'Vert',
+                //   ],
+                // ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextField(
+                child: DropDownField(
                   controller: disponibleController,
-                  decoration: InputDecoration(labelText: 'Disponibilite'),
+                  hintText: "Disponibilite",
+                  enabled: true,
+                  items: diponibilite,
+                  onValueChanged: (value) {
+                    setState(() {
+                      selectDisponibilite = value;
+                    });
+                  },
                 ),
+                // TextField(
+                //   controller: disponibleController,
+                //   decoration: InputDecoration(labelText: 'Disponibilite'),
+                // ),
               ),
               IconButton(
                 icon: Icon(Icons.camera),
@@ -172,7 +248,7 @@ class _AllModifier extends State<AllModifier> {
               ),
               Container(
                 child: _image == null
-                    ? Text('No Image Selected')
+                    ? Text('Aucune Image Selectionnee')
                     : Image.file(_image!),
               ),
               SizedBox(
@@ -198,3 +274,28 @@ class _AllModifier extends State<AllModifier> {
         ));
   }
 }
+
+String selectCouleur = "";
+String selectMoteur = "";
+String selectDisponibilite = "";
+
+List<String> couleurs = [
+  'Noir',
+  'Blanc',
+  'Jaune',
+  'Vert',
+  'Bleu',
+  'Rouge',
+  'Gris',
+  'Brun',
+  'Orange',
+  'Violet'
+];
+
+List<String> moteur = [
+  'Gasoil',
+  'Essence',
+  'Hybride',
+];
+
+List<String> diponibilite = ["DISPONIBLE", "NO DISPONIBLE"];

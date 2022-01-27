@@ -32,7 +32,8 @@ class _AllPersonDataState extends State<AllPersonData> {
           v["nbr_places"],
           v["Prix"],
           v["Couleur"],
-          v["Disponibilite"]);
+          v["Disponibilite"],
+          v["Code"]);
 
       voitures.add(voiture);
     }
@@ -122,6 +123,7 @@ class _AllPersonDataState extends State<AllPersonData> {
                                     Couleur: snapshot.data[id].Couleur,
                                     Disponibilite:
                                         snapshot.data[id].Disponibilite,
+                                    Code: snapshot.data[id].Code,
                                   ),
                                 ),
                               );
@@ -142,6 +144,7 @@ class _AllPersonDataState extends State<AllPersonData> {
                                     Couleur: snapshot.data[id].Couleur,
                                     Disponibilite:
                                         snapshot.data[id].Disponibilite,
+                                    Code: snapshot.data[id].Code,
                                   ),
                                 ));
                           },
